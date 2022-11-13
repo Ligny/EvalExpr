@@ -12,6 +12,15 @@ import Control.Expression ( Handler (..),
                           )
 import qualified GHC.Exception as GHCE ( throw )
 
+data ArgException = ArgHelp
+                  | ArgError String
+deriving (eq)
+
+instance Exception ArgException
+
+instance Show ArgException where
+    show ArgHelp = "Usage: evalExpr \"expression\""
+    show (ArgError msg) = "Error: " ++ msg
 
 data Token = Help
             | Unknown string
@@ -24,6 +33,7 @@ import Lib
 main :: IO ()
 main = (getArgs >>= evalExpr) `catches` [ Handler  ]
 
+handlerHelp :: ArgException -> IO ()
 
 
 evalExpr :: [String] -> IO ()
