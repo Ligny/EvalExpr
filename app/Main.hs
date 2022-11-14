@@ -34,7 +34,8 @@ main :: IO ()
 main = (getArgs >>= evalExpr) `catches` [ Handler  ]
 
 handlerHelp :: ArgException -> IO ()
-handlerHelp ArgHelp = print ArgHelp >> exitSuccess
+handlerHelp ArgHelp   = print ArgHelp   >> exitSuccess
+handlerHelp exception = print exception >> exitWith (ExitFailure 84)
 
 
 evalExpr :: [String] -> IO ()
